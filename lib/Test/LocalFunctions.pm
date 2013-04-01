@@ -3,21 +3,169 @@ package Test::LocalFunctions;
 use strict;
 use warnings;
 use Carp;
+use ExtUtils::Manifest qw/maniread/;
+use Sub::Identify qw/stash_name/;
+use PPI::Document;
+use PPI::Dumper;
 
-use version; our $VERSION = qv('0.0.1');
+our $VERSION = '0.01';
+our @EXPORT  = qw/all_local_functions_ok local_functions_ok/;
 
-# Other recommended modules (uncomment to use):
-#  use IO::Prompt;
-#  use Perl6::Export;
-#  use Perl6::Slurp;
-#  use Perl6::Say;
+use parent qw/Test::Builder::Module/;
 
+use constant _VERBOSE => ( $ENV{TEST_VERBOSE} || 0 );
 
-# Module implementation here
+sub all_local_functions_ok {
+    my (%args) = @_;
 
+    my $builder = __PACKAGE__->builder;
+    my @libs    = _fetch_modules_from_manifest($builder);
 
-1; # Magic true value required at end of module
+    $builder->plan( tests => scalar @libs );
+
+    my $fail = 0;
+    foreach my $lib (@libs) {
+        _local_functions_ok( $builder, $lib, \%args ) or $fail++;
+    }
+
+    return $fail == 0;
+}
+
+sub local_functions_ok {
+    my ( $lib, %args ) = @_;
+    return _local_functions_ok( __PACKAGE__->builder, $lib, \%args );
+}
+
+sub _local_functions_ok {
+    my ( $builder, $file, $args ) = @_;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    my $pid = fork();
+    if ( defined $pid ) {
+        if ( $pid != 0 ) {
+            wait;
+            return $builder->ok( $? == 0, $file );
+        }
+        else {
+            exit _check_local_functions( $builder, $file, $args );
+        }
+    }
+    else {
+        die "failed forking: $!";
+    }
+}
+
+sub _check_local_functions {
+    my ( $builder, $file, $args ) = @_;
+
+    my $fail = 0;
+
+    my $module          = _get_module_name($file);
+    my @local_functions = _fetch_local_functions($module);
+    my $ppi_document    = _fetch_PPI_document($file);
+    foreach my $local_function (@local_functions) {
+        unless ( $ppi_document =~ /$local_function\'/ ) {
+            $builder->diag( "Test::LocalFunctions failed: "
+                  . "'$local_function' is not used." );
+            $fail++;
+        }
+    }
+
+    return $fail;
+}
+
+sub _fetch_PPI_document {
+    my $file = shift;
+
+    my $document = PPI::Document->new($file);
+    $document = _prune_from_PPI_document($document);
+
+    my $dumper = PPI::Dumper->new($document);
+    $document = _remove_declarations_sub($dumper->string());
+
+    return $document;
+}
+
+sub _remove_declarations_sub {
+    my $document = shift;
+
+    $document =~ s/
+        PPI::Statement::Sub \n
+            \s*? PPI::Token::Word \s* \'sub\' \n
+            \s*? PPI::Token::Whitespace .*? \n
+            \s*? PPI::Token::Word .*? \n
+    //gxm;
+
+    return $document;
+}
+
+sub _prune_from_PPI_document {
+    my $document = shift;
+
+    my @surpluses_token = (
+        'Operator', 'Number', 'Comment', 'Pod',
+        'BOM',      'Data',   'End',     'Prototype',
+        'Separator', 'Quote',
+    );
+
+    # for token
+    foreach my $surplus (@surpluses_token) {
+        $document->prune('PPI::Token::' . $surplus);
+    }
+
+    return $document;
+}
+
+sub _fetch_modules_from_manifest {
+    my $builder = shift;
+
+    if ( not -f $ExtUtils::Manifest::MANIFEST ) {
+        $builder->plan(
+            skip_all => "$ExtUtils::Manifest::MANIFEST doesn't exist" );
+    }
+    my $manifest = maniread();
+    my @libs = grep { m!\Alib/.*\.pm\Z! } keys %{$manifest};
+    return @libs;
+}
+
+sub _fetch_local_functions {
+    my $module = shift;
+
+    my @local_functions;
+
+    no strict 'refs';
+
+    while ( my ( $key, $value ) = each %{"${module}::"} ) {
+        next unless $key =~ /^_/;
+        next unless *{"${module}::${key}"}{CODE};
+        next if $module ne stash_name($module->can($key));
+        push @local_functions, $key;
+    }
+
+    return @local_functions;
+}
+
+sub _get_module_name {
+    my $file = shift;
+
+    my $package = $file;
+    if ( $file =~ /\./ ) {
+        $package =~ s!\A.*\blib/!!;
+        $package =~ s!\.pm\Z!!;
+        $package =~ s!/!::!g;
+    }
+    else {
+        $file .= '.pm';
+        $file =~ s!/!::!g;
+    }
+
+    return $file, $package;
+}
+1;
 __END__
+
+=encoding utf8
 
 =head1 NAME
 

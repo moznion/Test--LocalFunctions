@@ -1,0 +1,16 @@
+.shipit
+Build.PL
+Changes
+cpanfile
+lib/Test/LocalFunctions.pm
+MANIFEST			This list of files
+README
+README.pod
+samples/sample.pl
+t/00.load.t
+xt/00.pod.t
+xt/01.pod-coverage.t
+xt/02.podspell.t
+xt/03.vars.t
+xt/99.perlcritic.t
+xt/perlcriticrc
