@@ -13,3 +13,4 @@ moznion
 moznion@gmail.com
 Test::LocalFunctions
 PPI
+MERCHANTABILITY
