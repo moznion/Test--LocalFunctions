@@ -1,13 +1,21 @@
-.shipit
 Build.PL
 Changes
 cpanfile
 lib/Test/LocalFunctions.pm
+LICENSE
 MANIFEST			This list of files
+META.json
+META.yml
 README
-README.pod
-samples/sample.pl
+samples/all_local_functions_ok.pl
 t/00.load.t
+t/01.self.t
+t/02.succ.t
+t/03.fail.t
+t/lib/Fail1.pm
+t/lib/Fail2.pm
+t/lib/Fail3.pm
+t/lib/Succ1.pm
 xt/00.pod.t
 xt/01.pod-coverage.t
 xt/02.podspell.t

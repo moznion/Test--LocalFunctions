@@ -8,17 +8,15 @@ my $builder = Module::Build::Pluggable->new(
     license           => 'perl',
     dist_author       => 'moznion <moznion@gmail.com>',
     dist_version_from => 'lib/Test/LocalFunctions.pm',
-    requires => {
-        # TODO
-        # perl => '',
+    requires          => {
+        perl => '5.010001',
     },
     add_to_cleanup => ['Test-LocalFunctions-*'],
     no_index       => { 'directory' => ['inc'] },
     meta_merge     => {
         'resource' => {
-            'license' => 'http://dev.perl.org/licenses/',
-
-            # 'repository' => '',
+            'license'    => 'http://dev.perl.org/licenses/',
+            'repository' => 'git://github.com/moznion/Test--LocalFunctions.git',
         },
     },
     test_files => ( -d '.git' || $ENV{RELEASE_TESTING} ) ? 't/ xt/' : 't/',
