@@ -1,14 +1,18 @@
 language: perl
 
+before_install:
+    - "perlbrew -f install-cpanm"
+    - "cpanm --notest parent"
+    - "cpanm --notest PPI"
+    - "cpanm --notest Sub::Identify"
+    - "cpanm --notest Test::Builder::Module"
+    - "cpanm --notest Module::Build"
+    - "cpanm --notest Module::Build::Pluggable"
+    - "cpanm --notest Test::More"
+    - "cpanm --notest Test::Builder::Tester"
+
 perl:
     - "5.10"
     - "5.12"
     - "5.14"
     - "5.16"
-
-install:
-    - cpanm parent PPI Sub::Identify Test::Builder::Module Module::Build Module::Build::Pluggable Test::More Test::Builder::Tester
-
-script:
-    - perl Build.PL
-    - ./Build test
