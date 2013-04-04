@@ -1,4 +1,7 @@
 Revision history for Test::LocalFunctions
 
+0.02    Thu Apr 04 03:52:16 +0900 2013
+        - Fix cpanfile errors
+
 0.01    Tue Apr 02 01:02:17 +0900 2013
         - Initial release
