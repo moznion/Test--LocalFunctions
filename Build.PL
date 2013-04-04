@@ -1,15 +1,24 @@
 use strict;
 use warnings;
-use Module::Build::Pluggable ( '+Module::Build::Pluggable::CPANfile', );
+use Module::Build;
 
-my $builder = Module::Build::Pluggable->new(
+my $builder = Module::Build->new(
     name              => 'Test-LocalFunctions',
     module_name       => 'Test::LocalFunctions',
     license           => 'perl',
     dist_author       => 'moznion <moznion@gmail.com>',
     dist_version_from => 'lib/Test/LocalFunctions.pm',
-    requires          => {
-        perl => '5.010001',
+    build_requires    => {
+        'Test::More'            => '0.98',
+        'Test::Builder::Tester' => '1.22',
+    },
+    configure_requires => { 'Module::Build' => '0.40' },
+    requires           => {
+        'parent'                => 0,
+        'PPI'                   => '1.215',
+        'Sub::Identify'         => '0.04',
+        'Test::Builder::Module' => '0.98',
+        perl                    => '5.010001',
     },
     add_to_cleanup => ['Test-LocalFunctions-*'],
     no_index       => { 'directory' => ['inc'] },

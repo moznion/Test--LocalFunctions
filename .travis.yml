@@ -2,7 +2,6 @@ language: perl
 
 before_install:
     - "perlbrew -f install-cpanm"
-    - "cpanm --installdeps --notest ."
 
 perl:
     - "5.10"

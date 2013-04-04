@@ -1,6 +1,5 @@
 Build.PL
 Changes
-cpanfile
 lib/Test/LocalFunctions.pm
 LICENSE
 MANIFEST			This list of files
