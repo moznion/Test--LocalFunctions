@@ -2,14 +2,7 @@ language: perl
 
 before_install:
     - "perlbrew -f install-cpanm"
-    - "cpanm --notest parent"
-    - "cpanm --notest PPI"
-    - "cpanm --notest Sub::Identify"
-    - "cpanm --notest Test::Builder::Module"
-    - "cpanm --notest Module::Build"
-    - "cpanm --notest Module::Build::Pluggable"
-    - "cpanm --notest Test::More"
-    - "cpanm --notest Test::Builder::Tester"
+    - "cpanm --installdeps --notest ."
 
 perl:
     - "5.10"
