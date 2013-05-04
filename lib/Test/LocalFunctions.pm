@@ -2,6 +2,7 @@ package Test::LocalFunctions;
 
 use strict;
 use warnings;
+use Carp;
 use ExtUtils::Manifest qw/maniread/;
 use Sub::Identify qw/stash_name/;
 use PPI::Document;
@@ -62,7 +63,7 @@ sub _check_local_functions {
 
     my $module          = _get_module_name($file);
     my @local_functions = _fetch_local_functions($module);
-    my $ppi_document    = _fetch_PPI_document($file);
+    my $ppi_document    = _generate_PPI_document($file);
     foreach my $local_function (@local_functions) {
         unless ( $ppi_document =~ /$local_function\'/ ) {
             $builder->diag( "Test::LocalFunctions failed: "
@@ -74,14 +75,14 @@ sub _check_local_functions {
     return $fail;
 }
 
-sub _fetch_PPI_document {
+sub _generate_PPI_document {
     my $file = shift;
 
     my $document = PPI::Document->new($file);
     $document = _prune_from_PPI_document($document);
 
     my $dumper = PPI::Dumper->new($document);
-    $document = _remove_declarations_sub($dumper->string());
+    $document = _remove_declarations_sub( $dumper->string() );
 
     return $document;
 }
@@ -102,15 +103,14 @@ sub _remove_declarations_sub {
 sub _prune_from_PPI_document {
     my $document = shift;
 
-    my @surpluses_token = (
-        'Operator', 'Number', 'Comment', 'Pod',
-        'BOM',      'Data',   'End',     'Prototype',
+    my @surplus_tokens = (
+        'Operator',  'Number', 'Comment', 'Pod',
+        'BOM',       'Data',   'End',     'Prototype',
         'Separator', 'Quote',
     );
 
-    # for token
-    foreach my $surplus (@surpluses_token) {
-        $document->prune('PPI::Token::' . $surplus);
+    foreach my $surplus_token (@surplus_tokens) {
+        $document->prune( 'PPI::Token::' . $surplus_token );
     }
 
     return $document;
@@ -134,13 +134,13 @@ sub _fetch_local_functions {
     my @local_functions;
 
     no strict 'refs';
-
     while ( my ( $key, $value ) = each %{"${module}::"} ) {
         next unless $key =~ /^_/;
         next unless *{"${module}::${key}"}{CODE};
-        next if $module ne stash_name($module->can($key));
+        next if $module ne stash_name( $module->can($key) );
         push @local_functions, $key;
     }
+    use strict 'refs';
 
     return @local_functions;
 }
@@ -148,18 +148,17 @@ sub _fetch_local_functions {
 sub _get_module_name {
     my $file = shift;
 
-    my $package = $file;
-    if ( $file =~ /\./ ) {
-        $package =~ s!\A.*\blib/!!;
-        $package =~ s!\.pm\Z!!;
-        $package =~ s!/!::!g;
-    }
-    else {
-        $file .= '.pm';
-        $file =~ s!/!::!g;
+    # e.g.
+    #   If file name is `lib/Foo/Bar.pm` then module name will be `Foo::Bar`
+    if ( $file =~ /\.pm/ ) {
+        my $module = $file;
+        $module =~ s!\A.*\blib/!!;
+        $module =~ s!\.pm\Z!!;
+        $module =~ s!/!::!g;
+        return $module;
     }
 
-    return $file, $package;
+    return $file;
 }
 1;
 __END__
