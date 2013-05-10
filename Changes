@@ -1,5 +1,8 @@
 Revision history for Test::LocalFunctions
 
+0.04    Fri May 10 18:49:27 +0900 2013
+        - Tiny fixes
+
 0.03    Thu Apr 04 04:14:37 +0900 2013
         - Removed a dependency on Module::Build::Pluggable::CPANfile
 
