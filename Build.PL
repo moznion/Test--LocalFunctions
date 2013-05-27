@@ -20,6 +20,9 @@ my $builder = Module::Build->new(
         'Test::Builder::Module' => '0.98',
         perl                    => '5.010001',
     },
+    recommends => {
+        'Compiler::Lexer' => 0,
+    },
     add_to_cleanup => ['Test-LocalFunctions-*'],
     no_index       => { 'directory' => ['inc'] },
     meta_merge     => {
