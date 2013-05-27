@@ -17,3 +17,10 @@ pm_to_blib
 Test-LocalFunctions-*
 Test-LocalFunctions-*.tar.gz
 *.bak
+/Test-LocalFunctions-*
+/.build
+/_build_params
+/Build
+!Build/
+!META.json
+!LICENSE
