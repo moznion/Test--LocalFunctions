@@ -2,6 +2,7 @@ language: perl
 
 before_install:
     - "perlbrew -f install-cpanm"
+    - "cpanm --installdeps --with-recommends -n ."
 
 perl:
     - "5.10"
