@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use utf8;
 use FindBin;
-push @INC, "$FindBin::Bin/lib";
+push @INC, "$FindBin::Bin/../lib";
 
 use Test::LocalFunctions;
 
