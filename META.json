@@ -45,6 +45,8 @@
             "Compiler::Lexer" : "0"
          },
          "requires" : {
+            "Exporter" : "0",
+            "Module::Load" : "0",
             "PPI" : "1.215",
             "Sub::Identify" : "0",
             "Test::Builder::Module" : "0.98",

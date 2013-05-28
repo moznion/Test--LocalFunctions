@@ -2,6 +2,8 @@ requires 'perl',                  '5.008006';
 requires 'PPI',                   '1.215';
 requires 'Test::Builder::Module', '0.98';
 requires 'Sub::Identify',         0;
+requires 'Module::Load',          0;
+requires 'Exporter',              0;
 requires 'parent';
 recommends 'Compiler::Lexer';
 
