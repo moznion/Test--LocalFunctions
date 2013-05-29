@@ -96,9 +96,19 @@ Test::LocalFunctions::PPI - Detects unused local functions by PPI
 
 =head1 SYNOPSIS
 
+    # check modules that are listed in MANIFEST
     use Test::LocalFunctions::PPI;
+    use Test::More;
 
-    all_local_functions_ok(); # check modules that are listed in MANIFEST
+    all_local_functions_ok();
+    done_testing;
+
+    # you can also specify individual file
+    use Test::LocalFunctions::PPI;
+    use Test::More;
+
+    local_functions_ok('/path/to/your/module_or_script');
+    done_testing;
 
 
 =head1 DESCRIPTION
