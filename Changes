@@ -2,6 +2,9 @@ Revision history for Test::LocalFunctions
 
 {{$NEXT}}
 
+0.07 2013-05-29T17:01:31Z
+        - Fix SYNOPSIS errors
+
 0.06 2013-05-29T15:35:19Z
         - Fix fatal typo in cpanfile
 
