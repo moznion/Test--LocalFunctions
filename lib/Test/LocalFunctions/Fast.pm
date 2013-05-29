@@ -76,34 +76,56 @@ __END__
 
 Test::LocalFunctions::Fast - Detects unused local function faster
 
+
 =head1 SYNOPSIS
 
     use Test::LocalFunctions::Fast;
 
     all_local_functions_ok(); # check modules that are listed in MANIFEST
 
+
 =head1 DESCRIPTION
 
 Test::LocalFunctions::Fast is finds unused local functions to clean up the source code. (Local function means the function which name starts from underscore.)
+
 This module is faster than Test::LocalFunction because using Compiler::Lexer.
+
 
 =head1 METHODS
 
-=over
+=over 4
 
-=item C<< all_local_functions_ok >>
+=item * all_local_functions_ok
 
 This is a test function which finds unused variables from modules that are listed in MANIFEST file.
 
-=item C<< local_functions_ok >>
+=item * local_functions_ok
 
 This is a test function which finds unused variables from specified source code.
 This function requires an argument which is the path to source file.
 
 =back
 
+
+=head1 DEPENDENCIES
+
+=over 4
+
+=item * Compiler::Lexer (version 0.12 or later)
+
+=item * Sub::Identify (version 0.04 or later)
+
+=item * Test::Builder::Module (version 0.98 or later)
+
+=item * Test::Builder::Tester (version 1.22 or later)
+
+=back
+
+
 =head1 SEE ALSO
 
 L<Test::LocalFunctions>
+
+L<Test::LocalFunctions::PPI>
 
 =cut

@@ -91,7 +91,7 @@ __END__
 
 =head1 NAME
 
-Test::LocalFunctions::PPI - Detects unused local functions
+Test::LocalFunctions::PPI - Detects unused local functions by PPI
 
 
 =head1 SYNOPSIS
@@ -106,16 +106,18 @@ Test::LocalFunctions::PPI - Detects unused local functions
 Test::LocalFunctions::PPI finds unused local functions to clean up the source code.
 (Local function means the function which name starts from underscore.)
 
+This module uses PPI as back end.
+
 
 =head1 METHODS
 
-=over
+=over 4
 
-=item C<< all_local_functions_ok >>
+=item * all_local_functions_ok
 
 This is a test function which finds unused variables from modules that are listed in MANIFEST file.
 
-=item C<< local_functions_ok >>
+=item * local_functions_ok
 
 This is a test function which finds unused variables from specified source code.
 This function requires an argument which is the path to source file.
@@ -125,24 +127,23 @@ This function requires an argument which is the path to source file.
 
 =head1 DEPENDENCIES
 
-PPI (version 1.215 or later)
+=over 4
 
-Sub::Identify (version 0.04 or later)
+=item * PPI (version 1.215 or later)
 
-Test::Builder::Module (version 0.98 or later)
+=item * Sub::Identify (version 0.04 or later)
 
-Test::Builder::Tester (version 1.22 or later)
+=item * Test::Builder::Module (version 0.98 or later)
+
+=item * Test::Builder::Tester (version 1.22 or later)
+
+=back
 
 
-=head1 INCOMPATIBILITIES
+=head1 SEE ALSO
 
-None reported.
+L<Test::LocalFunctions>
 
+L<Test::LocalFunctions::Fast>
 
-=head1 BUGS AND LIMITATIONS
-
-No bugs have been reported.
-
-Please report any bugs or feature requests to
-C<bug-test-localfunctions@rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org>.
+=cut

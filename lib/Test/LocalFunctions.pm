@@ -5,7 +5,7 @@ use warnings;
 use Module::Load;
 use parent qw/Exporter/;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 our @EXPORT  = qw/all_local_functions_ok local_functions_ok/;
 
 my $backend_module = _select_backend_module();
@@ -30,7 +30,7 @@ Test::LocalFunctions - Detects unused local functions
 
 =head1 VERSION
 
-This document describes Test::LocalFunctions version 0.04
+This document describes Test::LocalFunctions version 0.05
 
 
 =head1 SYNOPSIS
@@ -45,16 +45,23 @@ This document describes Test::LocalFunctions version 0.04
 Test::LocalFunctions finds unused local functions to clean up the source code.
 (Local function means the function which name starts from underscore.)
 
+This module decides back end module automatically. If `Compiler::Lexer` has been
+installed in target environment, this module will use `Compiler::Lexer` as back end.
+Elsewise this module will use `PPI`.
+
+`PPI` is not fast, but `Compiler::Lexer` is fast.
+So I recommend you to install `Compiler::Lexer`.
+
 
 =head1 METHODS
 
-=over
+=over 4
 
-=item C<< all_local_functions_ok >>
+=item * all_local_functions_ok
 
 This is a test function which finds unused variables from modules that are listed in MANIFEST file.
 
-=item C<< local_functions_ok >>
+=item * local_functions_ok
 
 This is a test function which finds unused variables from specified source code.
 This function requires an argument which is the path to source file.
@@ -64,18 +71,37 @@ This function requires an argument which is the path to source file.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Test::LocalFunctions requires no configuration files or environment variables.
+=over 4
+
+=item * T_LF_PPI (environment variable)
+
+This module uses `PPI` as back end forcedly if this environment variable is set any value.
+
+=back
 
 
 =head1 DEPENDENCIES
 
-PPI (version 1.215 or later)
+=over 4
 
-Sub::Identify (version 0.04 or later)
+=item * PPI (version 1.215 or later)
 
-Test::Builder::Module (version 0.98 or later)
+=item * Sub::Identify (version 0.04 or later)
 
-Test::Builder::Tester (version 1.22 or later)
+=item * Test::Builder::Module (version 0.98 or later)
+
+=item * Test::Builder::Tester (version 1.22 or later)
+
+=back
+
+
+=head1 RECOMMENDED
+
+=over 4
+
+=item * Compiler::Lexer (version 0.12 or later)
+
+=back
 
 
 =head1 INCOMPATIBILITIES
