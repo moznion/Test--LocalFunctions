@@ -17,6 +17,7 @@ sub _select_backend_module {
     return 'Test::LocalFunctions::PPI' if ( $ENV{T_LF_PPI} || $@ );
     return 'Test::LocalFunctions::Fast';
 }
+
 1;
 __END__
 

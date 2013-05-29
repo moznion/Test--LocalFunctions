@@ -2,13 +2,11 @@ package Test::LocalFunctions::PPI;
 
 use strict;
 use warnings;
-use Carp;
-use ExtUtils::Manifest qw/maniread/;
-use Sub::Identify qw/stash_name/;
+use Test::LocalFunctions::Util;
 use PPI::Document;
 use PPI::Dumper;
 
-our @EXPORT  = qw/all_local_functions_ok local_functions_ok/;
+our @EXPORT = qw/all_local_functions_ok local_functions_ok/;
 
 use parent qw/Test::Builder::Module/;
 
@@ -16,53 +14,25 @@ use constant _VERBOSE => ( $ENV{TEST_VERBOSE} || 0 );
 
 sub all_local_functions_ok {
     my (%args) = @_;
-
-    my $builder = __PACKAGE__->builder;
-    my @libs    = _fetch_modules_from_manifest($builder);
-
-    $builder->plan( tests => scalar @libs );
-
-    my $fail = 0;
-    foreach my $lib (@libs) {
-        _local_functions_ok( $builder, $lib, \%args ) or $fail++;
-    }
-
-    return $fail == 0;
+    return Test::LocalFunctions::Util::all_local_functions_ok( __PACKAGE__,
+        %args );
 }
 
 sub local_functions_ok {
     my ( $lib, %args ) = @_;
-    return _local_functions_ok( __PACKAGE__->builder, $lib, \%args );
+    return Test::LocalFunctions::Util::test_local_functions( __PACKAGE__,
+        __PACKAGE__->builder, $lib, \%args );
 }
 
-sub _local_functions_ok {
-    my ( $builder, $file, $args ) = @_;
-
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
-
-    my $pid = fork();
-    if ( defined $pid ) {
-        if ( $pid != 0 ) {
-            wait;
-            return $builder->ok( $? == 0, $file );
-        }
-        else {
-            exit _check_local_functions( $builder, $file, $args );
-        }
-    }
-    else {
-        die "failed forking: $!";
-    }
-}
-
-sub _check_local_functions {
-    my ( $builder, $file ) = @_;    # append $args later?
+sub is_in_use {
+    my ( undef, $builder, $file ) = @_;    # append $args later?
 
     my $fail = 0;
 
-    my $module          = _get_module_name($file);
-    my @local_functions = _fetch_local_functions($module);
-    my $ppi_document    = _generate_PPI_document($file);
+    my $module = Test::LocalFunctions::Util::extract_module_name($file);
+    my @local_functions =
+      Test::LocalFunctions::Util::list_local_functions($module);
+    my $ppi_document = _generate_PPI_document($file);
     foreach my $local_function (@local_functions) {
         unless ( $ppi_document =~ /$local_function\'/ ) {
             $builder->diag( "Test::LocalFunctions failed: "
@@ -78,7 +48,7 @@ sub _generate_PPI_document {
     my $file = shift;
 
     my $document = PPI::Document->new($file);
-    $document = _prune_from_PPI_document($document);
+    $document = _prune_PPI_tokens($document);
 
     my $dumper = PPI::Dumper->new($document);
     $document = _remove_declarations_sub( $dumper->string() );
@@ -99,7 +69,7 @@ sub _remove_declarations_sub {
     return $document;
 }
 
-sub _prune_from_PPI_document {
+sub _prune_PPI_tokens {
     my $document = shift;
 
     my @surplus_tokens = (
@@ -113,51 +83,6 @@ sub _prune_from_PPI_document {
     }
 
     return $document;
-}
-
-sub _fetch_modules_from_manifest {
-    my $builder = shift;
-
-    if ( not -f $ExtUtils::Manifest::MANIFEST ) {
-        $builder->plan(
-            skip_all => "$ExtUtils::Manifest::MANIFEST doesn't exist" );
-    }
-    my $manifest = maniread();
-    my @libs = grep { m!\Alib/.*\.pm\Z! } keys %{$manifest};
-    return @libs;
-}
-
-sub _fetch_local_functions {
-    my $module = shift;
-
-    my @local_functions;
-
-    no strict 'refs';
-    while ( my ( $key, $value ) = each %{"${module}::"} ) {
-        next unless $key =~ /^_/;
-        next unless *{"${module}::${key}"}{CODE};
-        next if $module ne stash_name( $module->can($key) );
-        push @local_functions, $key;
-    }
-    use strict 'refs';
-
-    return @local_functions;
-}
-
-sub _get_module_name {
-    my $file = shift;
-
-    # e.g.
-    #   If file name is `lib/Foo/Bar.pm` then module name will be `Foo::Bar`
-    if ( $file =~ /\.pm/ ) {
-        my $module = $file;
-        $module =~ s!\A.*\blib/!!;
-        $module =~ s!\.pm\Z!!;
-        $module =~ s!/!::!g;
-        return $module;
-    }
-
-    return $file;
 }
 1;
 __END__
