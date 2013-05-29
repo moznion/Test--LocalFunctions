@@ -2,6 +2,9 @@ Revision history for Test::LocalFunctions
 
 {{$NEXT}}
 
+0.06 2013-05-29T15:35:19Z
+        - Fix fatal typo in cpanfile
+
 0.05 2013-05-29T15:10:36Z
         - Added Test::LocalFunctions::Fast
           (It is really fast!)
