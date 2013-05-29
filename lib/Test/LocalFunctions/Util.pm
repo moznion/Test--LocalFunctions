@@ -9,7 +9,7 @@ sub all_local_functions_ok {
     my ( $caller, %args ) = @_;
 
     my $builder = $caller->builder;
-    my @libs = Test::LocalFunctions::Util::list_modules_in_manifest($builder);
+    my @libs = _list_modules_in_manifest($builder);
 
     $builder->plan( tests => scalar @libs );
 
@@ -58,18 +58,6 @@ sub list_local_functions {
     return @local_functions;
 }
 
-sub list_modules_in_manifest {
-    my $builder = shift;
-
-    if ( not -f $ExtUtils::Manifest::MANIFEST ) {
-        $builder->plan(
-            skip_all => "$ExtUtils::Manifest::MANIFEST doesn't exist" );
-    }
-    my $manifest = maniread();
-    my @libs = grep { m!\Alib/.*\.pm\Z! } keys %{$manifest};
-    return @libs;
-}
-
 sub extract_module_name {
     my $file = shift;
 
@@ -84,5 +72,17 @@ sub extract_module_name {
     }
 
     return $file;
+}
+
+sub _list_modules_in_manifest {
+    my $builder = shift;
+
+    if ( not -f $ExtUtils::Manifest::MANIFEST ) {
+        $builder->plan(
+            skip_all => "$ExtUtils::Manifest::MANIFEST doesn't exist" );
+    }
+    my $manifest = maniread();
+    my @libs = grep { m!\Alib/.*\.pm\Z! } keys %{$manifest};
+    return @libs;
 }
 1;
