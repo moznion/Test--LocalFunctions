@@ -45,7 +45,9 @@
             "Compiler::Lexer" : "0"
          },
          "requires" : {
+            "Carp" : "0",
             "Exporter" : "0",
+            "ExtUtils::Manifest" : "0",
             "Module::Load" : "0",
             "PPI" : "1.215",
             "Sub::Identify" : "0",
@@ -56,6 +58,7 @@
       },
       "test" : {
          "requires" : {
+            "FindBin" : "0",
             "Test::Builder::Tester" : "1.22",
             "Test::More" : "0.98"
          }
