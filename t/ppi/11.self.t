@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use utf8;
 
-use Test::LocalFunctions;
+use Test::LocalFunctions::PPI;
 
 use Test::More;
 
