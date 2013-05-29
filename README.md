@@ -6,7 +6,7 @@ Test::LocalFunctions - Detects unused local functions
 
 # VERSION
 
-This document describes Test::LocalFunctions version 0.04
+This document describes Test::LocalFunctions version 0.05
 
 
 
@@ -23,15 +23,22 @@ This document describes Test::LocalFunctions version 0.04
 Test::LocalFunctions finds unused local functions to clean up the source code.
 (Local function means the function which name starts from underscore.)
 
+This module decides back end module automatically. If \`Compiler::Lexer\` has been
+installed in target environment, this module will use \`Compiler::Lexer\` as back end.
+Elsewise this module will use \`PPI\`.
+
+\`PPI\` is not fast, but \`Compiler::Lexer\` is fast.
+So I recommend you to install \`Compiler::Lexer\`.
+
 
 
 # METHODS
 
-- `all_local_functions_ok`
+- all\_local\_functions\_ok
 
     This is a test function which finds unused variables from modules that are listed in MANIFEST file.
 
-- `local_functions_ok`
+- local\_functions\_ok
 
     This is a test function which finds unused variables from specified source code.
     This function requires an argument which is the path to source file.
@@ -40,19 +47,24 @@ Test::LocalFunctions finds unused local functions to clean up the source code.
 
 # CONFIGURATION AND ENVIRONMENT
 
-Test::LocalFunctions requires no configuration files or environment variables.
+- T\_LF\_PPI (environment variable)
+
+    This module uses \`PPI\` as back end forcedly if this environment variable is set any value.
 
 
 
 # DEPENDENCIES
 
-PPI (version 1.215 or later)
+- PPI (version 1.215 or later)
+- Sub::Identify (version 0.04 or later)
+- Test::Builder::Module (version 0.98 or later)
+- Test::Builder::Tester (version 1.22 or later)
 
-Sub::Identify (version 0.04 or later)
 
-Test::Builder::Module (version 0.98 or later)
 
-Test::Builder::Tester (version 1.22 or later)
+# RECOMMENDED
+
+- Compiler::Lexer (version 0.12 or later)
 
 
 
