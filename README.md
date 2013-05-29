@@ -14,7 +14,11 @@ This document describes Test::LocalFunctions version 0.05
 
     use Test::LocalFunctions;
 
-    all_local_functions_ok(); # check modules that are listed in MANIFEST
+    # check modules that are listed in MANIFEST
+    all_local_functions_ok();
+
+    # you can also specify individual file
+    local_functions_ok('/path/to/your/module_or_script');
 
 
 
