@@ -8,13 +8,15 @@ use parent qw/Exporter/;
 our $VERSION = '0.04';
 our @EXPORT  = qw/all_local_functions_ok local_functions_ok/;
 
-eval { require Compiler::Lexer };
-my $backend_module = 'Test::LocalFunctions::Fast';
-if ( $@ || $ENV{T_LF_PPI} ) {
-    $backend_module = 'Test::LocalFunctions::PPI';
-}
+my $backend_module = _select_backend_module();
 load $backend_module;
 $backend_module->import;
+
+sub _select_backend_module {
+    eval { require Compiler::Lexer };
+    return 'Test::LocalFunctions::PPI' if ( $ENV{T_LF_PPI} || $@ );
+    return 'Test::LocalFunctions::Fast';
+}
 1;
 __END__
 
