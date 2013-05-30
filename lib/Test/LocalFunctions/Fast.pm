@@ -33,10 +33,10 @@ sub is_in_use {
       Test::LocalFunctions::Util::list_local_functions($module);
     my @tokens = _fetch_tokens($file);
 
-  LOCAL_FUNCTION: for my $local_function (@local_functions) {
+    LOCAL_FUNCTION: for my $local_function (@local_functions) {
         for my $token (@tokens) {
             if ( $token->{data} eq $local_function ) {
-                last LOCAL_FUNCTION;
+                next LOCAL_FUNCTION;
             }
         }
         $builder->diag(

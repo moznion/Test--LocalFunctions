@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use ExtUtils::Manifest qw/maniread/;
 use Sub::Identify qw/stash_name/;
+use Module::Load;
 
 sub all_local_functions_ok {
     my ( $caller, %args ) = @_;
@@ -47,10 +48,11 @@ sub list_local_functions {
     my @local_functions;
 
     no strict 'refs';
+    load $module;
     while ( my ( $key, $value ) = each %{"${module}::"} ) {
         next unless $key =~ /^_/;
         next unless *{"${module}::${key}"}{CODE};
-        next if $module ne stash_name( $module->can($key) );
+        next unless $module eq stash_name( $module->can($key) );
         push @local_functions, $key;
     }
     use strict 'refs';
