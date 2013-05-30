@@ -3,41 +3,35 @@ package Test::LocalFunctions::Fast;
 use strict;
 use warnings;
 use Test::LocalFunctions::Util;
+use Test::LocalFunctions::Receptor;
 use Compiler::Lexer;
+use parent qw/Test::Builder::Module/;
 
 our @EXPORT = qw/all_local_functions_ok local_functions_ok/;
-
-use parent qw/Test::Builder::Module/;
 
 use constant _VERBOSE => ( $ENV{TEST_VERBOSE} || 0 );
 
 sub all_local_functions_ok {
     my (%args) = @_;
-    return Test::LocalFunctions::Util::all_local_functions_ok( __PACKAGE__,
-        %args );
+    return Test::LocalFunctions::Receptor::all_local_functions_ok( __PACKAGE__, %args );
 }
 
 sub local_functions_ok {
     my ( $lib, %args ) = @_;
-    return Test::LocalFunctions::Util::test_local_functions( __PACKAGE__,
-        __PACKAGE__->builder, $lib, \%args );
+    return Test::LocalFunctions::Receptor::local_functions_ok( __PACKAGE__, $lib, \%args );
 }
 
 sub is_in_use {
     my ( undef, $builder, $file ) = @_;
 
+    my $module          = Test::LocalFunctions::Util::extract_module_name($file);
+    my @local_functions = Test::LocalFunctions::Util::list_local_functions($module);
+    my @tokens          = _fetch_tokens($file);
+
     my $fail = 0;
-
-    my $module = Test::LocalFunctions::Util::extract_module_name($file);
-    my @local_functions =
-      Test::LocalFunctions::Util::list_local_functions($module);
-    my @tokens = _fetch_tokens($file);
-
     LOCAL_FUNCTION: for my $local_function (@local_functions) {
         for my $token (@tokens) {
-            if ( $token->{data} eq $local_function ) {
-                next LOCAL_FUNCTION;
-            }
+            next LOCAL_FUNCTION if ( $token->{data} eq $local_function );
         }
         $builder->diag(
             "Test::LocalFunctions failed: '$local_function' is not used.");
@@ -50,11 +44,11 @@ sub is_in_use {
 sub _fetch_tokens {
     my $file = shift;
 
-    open( my $fh, '<', $file ) or die("Error");
-    my $code = do { local $/; <$fh> };
-    my $lexer = Compiler::Lexer->new($file);
-    my @tokens =
-      grep { _remove_tokens($_) } map { @$$_ } ( $lexer->tokenize($code) );
+    open( my $fh, '<', $file ) or die("Can not open the file: $!");
+    my $code   = do { local $/; <$fh> };
+    my $lexer  = Compiler::Lexer->new($file);
+    my @tokens = grep { _remove_tokens($_) } map { @$$_ } ( $lexer->tokenize($code) );
+    close($fh);
 
     return @tokens;
 }
@@ -62,9 +56,7 @@ sub _fetch_tokens {
 sub _remove_tokens {
     my $token = shift;
 
-    if ( $token->{name} eq 'Key' || $token->{name} eq 'Call' ) {
-        return 1;
-    }
+    return 1 if ( $token->{name} eq 'Key' || $token->{name} eq 'Call' );
     return 0;
 }
 1;

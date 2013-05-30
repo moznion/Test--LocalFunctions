@@ -6,42 +6,6 @@ use ExtUtils::Manifest qw/maniread/;
 use Sub::Identify qw/stash_name/;
 use Module::Load;
 
-sub all_local_functions_ok {
-    my ( $caller, %args ) = @_;
-
-    my $builder = $caller->builder;
-    my @libs = _list_modules_in_manifest($builder);
-
-    $builder->plan( tests => scalar @libs );
-
-    my $fail = 0;
-    for my $lib (@libs) {
-        test_local_functions( $caller, $builder, $lib, \%args ) or $fail++;
-    }
-
-    return $fail == 0;
-}
-
-sub test_local_functions {
-    my ( $caller, $builder, $file, $args ) = @_;
-
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
-
-    my $pid = fork();
-    if ( defined $pid ) {
-        if ( $pid != 0 ) {
-            wait;
-            return $builder->ok( $? == 0, $file );
-        }
-        else {
-            exit $caller->is_in_use( $builder, $file, $args );
-        }
-    }
-    else {
-        die "failed forking: $!";
-    }
-}
-
 sub list_local_functions {
     my $module = shift;
 
@@ -74,17 +38,5 @@ sub extract_module_name {
     }
 
     return $file;
-}
-
-sub _list_modules_in_manifest {
-    my $builder = shift;
-
-    if ( not -f $ExtUtils::Manifest::MANIFEST ) {
-        $builder->plan(
-            skip_all => "$ExtUtils::Manifest::MANIFEST doesn't exist" );
-    }
-    my $manifest = maniread();
-    my @libs = grep { m!\Alib/.*\.pm\Z! } keys %{$manifest};
-    return @libs;
 }
 1;

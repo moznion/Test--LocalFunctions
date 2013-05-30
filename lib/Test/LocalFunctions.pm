@@ -2,22 +2,33 @@ package Test::LocalFunctions;
 
 use strict;
 use warnings;
+use Test::LocalFunctions::Receptor;
 use Module::Load;
-use parent qw/Exporter/;
+use parent qw/Test::Builder::Module/;
 
 our $VERSION = '0.07';
 our @EXPORT  = qw/all_local_functions_ok local_functions_ok/;
 
-my $backend_module = _select_backend_module();
-load $backend_module;
-$backend_module->import;
-
-sub _select_backend_module {
-    eval { require Compiler::Lexer };
-    return 'Test::LocalFunctions::PPI' if ( $ENV{T_LF_PPI} || $@ );
-    return 'Test::LocalFunctions::Fast';
+my $backend_module;
+BEGIN {
+    my $select_backend_module = sub {
+        eval { require Compiler::Lexer };
+        return 'Test::LocalFunctions::PPI' if ( $ENV{T_LF_PPI} || $@ );
+        return 'Test::LocalFunctions::Fast';
+    };
+    $backend_module = $select_backend_module->();
+    load $backend_module;
 }
 
+sub all_local_functions_ok {
+    my (%args) = @_;
+    return Test::LocalFunctions::Receptor::all_local_functions_ok( $backend_module, %args );
+}
+
+sub local_functions_ok {
+    my ( $lib, %args ) = @_;
+    return Test::LocalFunctions::Receptor::local_functions_ok( $backend_module, $lib, \%args );
+}
 1;
 __END__
 

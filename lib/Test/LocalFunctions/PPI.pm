@@ -3,40 +3,36 @@ package Test::LocalFunctions::PPI;
 use strict;
 use warnings;
 use Test::LocalFunctions::Util;
+use Test::LocalFunctions::Receptor;
 use PPI::Document;
 use PPI::Dumper;
+use parent qw/Test::Builder::Module/;
 
 our @EXPORT = qw/all_local_functions_ok local_functions_ok/;
-
-use parent qw/Test::Builder::Module/;
 
 use constant _VERBOSE => ( $ENV{TEST_VERBOSE} || 0 );
 
 sub all_local_functions_ok {
     my (%args) = @_;
-    return Test::LocalFunctions::Util::all_local_functions_ok( __PACKAGE__,
-        %args );
+    return Test::LocalFunctions::Receptor::all_local_functions_ok( __PACKAGE__, %args );
 }
 
 sub local_functions_ok {
     my ( $lib, %args ) = @_;
-    return Test::LocalFunctions::Util::test_local_functions( __PACKAGE__,
-        __PACKAGE__->builder, $lib, \%args );
+    return Test::LocalFunctions::Receptor::local_functions_ok( __PACKAGE__, $lib, \%args );
 }
 
 sub is_in_use {
     my ( undef, $builder, $file ) = @_;    # append $args later?
 
-    my $fail = 0;
+    my $module          = Test::LocalFunctions::Util::extract_module_name($file);
+    my @local_functions = Test::LocalFunctions::Util::list_local_functions($module);
+    my $ppi_document    = _generate_PPI_document($file);
 
-    my $module = Test::LocalFunctions::Util::extract_module_name($file);
-    my @local_functions =
-      Test::LocalFunctions::Util::list_local_functions($module);
-    my $ppi_document = _generate_PPI_document($file);
+    my $fail = 0;
     foreach my $local_function (@local_functions) {
         unless ( $ppi_document =~ /$local_function\'/ ) {
-            $builder->diag( "Test::LocalFunctions failed: "
-                  . "'$local_function' is not used." );
+            $builder->diag( "Test::LocalFunctions failed: '$local_function' is not used." );
             $fail++;
         }
     }
@@ -48,12 +44,8 @@ sub _generate_PPI_document {
     my $file = shift;
 
     my $document = PPI::Document->new($file);
-    $document = _prune_PPI_tokens($document);
-
-    my $dumper = PPI::Dumper->new($document);
-    $document = _remove_declarations_sub( $dumper->string() );
-
-    return $document;
+    my $dumper   = PPI::Dumper->new(_prune_PPI_tokens($document));
+    return _remove_declarations_sub( $dumper->string() );
 }
 
 sub _remove_declarations_sub {
