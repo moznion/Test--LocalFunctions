@@ -9,7 +9,7 @@ use parent qw/Test::Builder::Module/;
 BEGIN {
     eval { require Compiler::Lexer };
     if ($@) {
-        $ENV{'TEST_PHASE'} or die $@;
+        $ENV{TEST_LOCALFUNCTIONS_TEST_PHASE} or die $@;
     }
 }
 
