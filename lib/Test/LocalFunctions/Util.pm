@@ -13,7 +13,8 @@ sub list_local_functions {
 
     no strict 'refs';
     load $module;
-    while ( my ( $key, $value ) = each %{"${module}::"} ) {
+    my %package = %{"${module}::"};
+    while ( my ( $key, $value ) = each %package ) {
         next unless $key =~ /^_/;
         next unless *{"${module}::${key}"}{CODE};
         next unless $module eq stash_name( $module->can($key) );
