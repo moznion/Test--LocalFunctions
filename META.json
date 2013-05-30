@@ -4,7 +4,7 @@
       "moznion  C<< <moznion@gmail.com> >>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.4.4, CPAN::Meta::Converter version 2.130880",
+   "generated_by" : "Minilla/v0.4.5, CPAN::Meta::Converter version 2.130880",
    "license" : [
       "perl_5"
    ],
