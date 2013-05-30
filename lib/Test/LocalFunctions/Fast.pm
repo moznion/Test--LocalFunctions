@@ -4,8 +4,14 @@ use strict;
 use warnings;
 use Test::LocalFunctions::Util;
 use Test::LocalFunctions::Receptor;
-use Compiler::Lexer;
 use parent qw/Test::Builder::Module/;
+
+BEGIN {
+    eval { require Compiler::Lexer };
+    if ($@) {
+        $ENV{'TEST_PHASE'} or die $@;
+    }
+}
 
 our @EXPORT = qw/all_local_functions_ok local_functions_ok/;
 
