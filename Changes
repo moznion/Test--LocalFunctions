@@ -1,6 +1,8 @@
 Revision history for Test::LocalFunctions
 
 {{$NEXT}}
+
+0.10 2013-05-30T09:10:25Z
         - Added Test::LocalFunctions::Fast
           (It is really fast!)
 
