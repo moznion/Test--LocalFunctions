@@ -7,7 +7,7 @@ use Module::Load;
 use parent qw/Test::Builder::Module/;
 
 our $VERSION = '0.12';
-our @EXPORT  = qw/all_local_functions_ok local_functions_ok/;
+our @EXPORT  = qw/all_local_functions_ok local_functions_ok which_module_is_used/;
 
 my $backend_module;
 BEGIN {
@@ -28,6 +28,10 @@ sub all_local_functions_ok {
 sub local_functions_ok {
     my ( $lib, %args ) = @_;
     return Test::LocalFunctions::Receptor::local_functions_ok( $backend_module, $lib, \%args );
+}
+
+sub which_backend_is_used {
+    return $backend_module;
 }
 1;
 __END__
@@ -67,8 +71,8 @@ Test::LocalFunctions finds unused local functions to clean up the source code.
 (Local function means the function which name starts from underscore.)
 
 This module decides back end module automatically. If `Compiler::Lexer` has been
-installed in target environment, this module will use `Compiler::Lexer` as back end.
-Elsewise this module will use `PPI`.
+installed in target environment, this module will use `Test::LocalFunctions::Fast` as back end.
+Otherwise this module will use `Test::LocalFunctions::PPI`. Which uses `PPI` for lexical analysis.
 
 `PPI` is not fast, but `Compiler::Lexer` is fast.
 So I recommend you to install `Compiler::Lexer`.
@@ -87,6 +91,11 @@ This is a test function which finds unused variables from modules that are liste
 This is a test function which finds unused variables from specified source code.
 This function requires an argument which is the path to source file.
 
+=item * which_backend_is_used
+
+This function returns the used module as back end.
+It will returns `Test::LocalFunctions::PPI` or `Test::LocalFunctions::Fast`.
+
 =back
 
 
@@ -96,7 +105,7 @@ This function requires an argument which is the path to source file.
 
 =item * T_LF_PPI (environment variable)
 
-This module uses `PPI` as back end forcedly if this environment variable is set any value.
+This module uses `Test::LocalFunctions::PPI` as back end forcedly if this environment variable is set any value.
 
 =back
 

@@ -34,8 +34,8 @@ Test::LocalFunctions finds unused local functions to clean up the source code.
 (Local function means the function which name starts from underscore.)
 
 This module decides back end module automatically. If \`Compiler::Lexer\` has been
-installed in target environment, this module will use \`Compiler::Lexer\` as back end.
-Elsewise this module will use \`PPI\`.
+installed in target environment, this module will use \`Test::LocalFunctions::Fast\` as back end.
+Otherwise this module will use \`Test::LocalFunctions::PPI\`. Which uses \`PPI\` for lexical analysis.
 
 \`PPI\` is not fast, but \`Compiler::Lexer\` is fast.
 So I recommend you to install \`Compiler::Lexer\`.
@@ -53,13 +53,18 @@ So I recommend you to install \`Compiler::Lexer\`.
     This is a test function which finds unused variables from specified source code.
     This function requires an argument which is the path to source file.
 
+- which\_backend\_is\_used
+
+    This function returns the used module as back end.
+    It will returns \`Test::LocalFunctions::PPI\` or \`Test::LocalFunctions::Fast\`.
+
 
 
 # CONFIGURATION AND ENVIRONMENT
 
 - T\_LF\_PPI (environment variable)
 
-    This module uses \`PPI\` as back end forcedly if this environment variable is set any value.
+    This module uses \`Test::LocalFunctions::PPI\` as back end forcedly if this environment variable is set any value.
 
 
 

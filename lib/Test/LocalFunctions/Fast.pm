@@ -72,7 +72,7 @@ __END__
 
 =head1 NAME
 
-Test::LocalFunctions::Fast - Detects unused local function faster
+Test::LocalFunctions::Fast - Detects unused local function by Compiler::Lexer
 
 
 =head1 SYNOPSIS
@@ -96,7 +96,7 @@ Test::LocalFunctions::Fast - Detects unused local function faster
 
 Test::LocalFunctions::Fast is finds unused local functions to clean up the source code. (Local function means the function which name starts from underscore.)
 
-This module is faster than Test::LocalFunction because using Compiler::Lexer.
+This module is faster than Test::LocalFunction::PPI, because this module uses Compiler::Lexer as lexical tokenizer.
 
 
 =head1 METHODS

@@ -108,7 +108,7 @@ Test::LocalFunctions::PPI - Detects unused local functions by PPI
 Test::LocalFunctions::PPI finds unused local functions to clean up the source code.
 (Local function means the function which name starts from underscore.)
 
-This module uses PPI as back end.
+This module uses PPI as lexical analyzer.
 
 
 =head1 METHODS
