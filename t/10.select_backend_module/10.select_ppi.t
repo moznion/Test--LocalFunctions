@@ -2,18 +2,12 @@
 
 use strict;
 use warnings;
+use FindBin;
 
 use Test::More;
 
 BEGIN {
-    *CORE::GLOBAL::require = sub {
-        my $file = shift;
-
-        if ($file =~ m!Compiler/Lexer\.pm!) {
-            die 'NOT HERE';
-        }
-        CORE::require($file)
-    };
+    unshift @INC, "$FindBin::Bin/lib";
 }
 
 subtest 'Environment variable of "T_LF_PPI" is enabled' => sub {
