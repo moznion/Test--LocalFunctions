@@ -2,6 +2,9 @@ Revision history for Test::LocalFunctions
 
 {{$NEXT}}
 
+0.14 2013-06-03T07:22:35Z
+        - Tiny fix to pass tests on perl-5.8.9.
+
 0.13 2013-05-31T11:21:12Z
         - Added function to get the back end module name which is used.
           (Thank you for your advice, @tokuhirom)

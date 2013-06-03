@@ -6,7 +6,7 @@ use Test::LocalFunctions::Receptor;
 use Module::Load;
 use parent qw/Test::Builder::Module/;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 our @EXPORT  = qw/all_local_functions_ok local_functions_ok which_module_is_used/;
 
 my $backend_module;
@@ -45,7 +45,7 @@ Test::LocalFunctions - Detects unused local functions
 
 =head1 VERSION
 
-This document describes Test::LocalFunctions version 0.13
+This document describes Test::LocalFunctions version 0.14
 
 
 =head1 SYNOPSIS
