@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use utf8;
 use FindBin;
-push @INC, "$FindBin::Bin/../lib";
+push @INC, "$FindBin::Bin/../resource/lib";
 
 # Test::LocalFunctions::Fast uses Compiler::Lexer.
 # It is not up to user to install Compiler::Lexer.
@@ -16,7 +16,7 @@ BEGIN {
 
 use Test::LocalFunctions::Fast;
 
-foreach my $lib (map{"t/lib/Succ$_.pm"} 1..1) {
+foreach my $lib (map{"t/resource/lib/Succ$_.pm"} 1..1) {
     if ($lib =~ /Succ\d*.pm/) {
         require $&;
     }

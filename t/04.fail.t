@@ -4,14 +4,14 @@ use strict;
 use warnings;
 use utf8;
 use FindBin;
-push @INC, "$FindBin::Bin/lib";
+push @INC, "$FindBin::Bin/resource/lib";
 
 use Test::LocalFunctions;
 
 use Test::More;
 use Test::Builder::Tester;
 
-foreach my $lib (map{"t/lib/Fail$_.pm"} 1..3) {
+foreach my $lib (map{"t/resource/lib/Fail$_.pm"} 1..3) {
     if ($lib =~ /Fail\d*.pm/) {
         require $&;
     }
