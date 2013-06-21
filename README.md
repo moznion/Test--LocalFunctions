@@ -15,15 +15,26 @@ This document describes Test::LocalFunctions version 0.14
     # check modules that are listed in MANIFEST
     use Test::LocalFunctions;
     use Test::More;
-
     all_local_functions_ok();
+    done_testing;
+
+    # you can specify modules to ignore the test
+    use Test::LocalFunctions;
+    use Test::More;
+    all_local_functions_ok({ignore_modules => ['Wanna::Ignore::Module']}); # Wanna::Ignore::Module will be ignored to testing
     done_testing;
 
     # you can also specify individual file
     use Test::LocalFunctions;
     use Test::More;
-
     local_functions_ok('/path/to/your/module_or_script');
+    done_testing;
+
+    # you can specify functions to exclude from test by regex.
+    use Test::LocalFunctions;
+    use Test::More;
+    local_functions_ok('/path/to/your/module_or_script', {ignore_functions => [qr/_wanna_ignore_function/]}); # _wanna_ignore_function() will be ignored to testing.
+    # all_local_functions_ok({ignore_functions => [qr/_wanna_ignore_function/]}); # <= also ok!
     done_testing;
 
 
