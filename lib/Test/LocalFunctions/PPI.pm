@@ -25,16 +25,18 @@ sub local_functions_ok {
 sub is_in_use {
     my ( undef, $builder, $file, $args ) = @_;    # append $args later?
 
-    my $module          = Test::LocalFunctions::Util::extract_module_name($file);
-    my @local_functions = Test::LocalFunctions::Util::list_local_functions($module);
-    my $ppi_document    = _generate_PPI_document($file);
+    my $ignore_functions = $args->{ignore_functions};
+    my $module           = Test::LocalFunctions::Util::extract_module_name($file);
+    my @local_functions  = Test::LocalFunctions::Util::list_local_functions($module);
+    my $ppi_document     = _generate_PPI_document($file);
 
     my $fail = 0;
     foreach my $local_function (@local_functions) {
         unless ( $ppi_document =~ /$local_function\'/ ) {
-            # TODO stop words!
-            $builder->diag( "Test::LocalFunctions failed: '$local_function' is not used." );
-            $fail++;
+            unless ( grep { $local_function =~ $_ } @$ignore_functions ) {
+                $builder->diag("Test::LocalFunctions failed: '$local_function' is not used.");
+                $fail++;
+            }
         }
     }
 

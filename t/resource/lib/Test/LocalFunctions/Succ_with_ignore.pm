@@ -12,12 +12,11 @@ sub _bar {
 sub _baz {
 }
 
-sub _foobar {
+sub _foobarbaz {
 }
 
 sub main {
     _foo();
-    _bar();
 }
 
 1;

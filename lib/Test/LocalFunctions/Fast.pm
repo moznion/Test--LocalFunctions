@@ -28,20 +28,23 @@ sub local_functions_ok {
 }
 
 sub is_in_use {
-    my ( undef, $builder, $file ) = @_;
+    my ( undef, $builder, $file, $args ) = @_;
 
-    my $module          = Test::LocalFunctions::Util::extract_module_name($file);
-    my @local_functions = Test::LocalFunctions::Util::list_local_functions($module);
-    my @tokens          = _fetch_tokens($file);
+    my $ignore_functions = $args->{ignore_functions};
+    my $module           = Test::LocalFunctions::Util::extract_module_name($file);
+    my @local_functions  = Test::LocalFunctions::Util::list_local_functions($module);
+    my @tokens           = _fetch_tokens($file);
 
     my $fail = 0;
     LOCAL_FUNCTION: for my $local_function (@local_functions) {
         for my $token (@tokens) {
             next LOCAL_FUNCTION if ( $token->{data} eq $local_function );
         }
-        $builder->diag(
-            "Test::LocalFunctions failed: '$local_function' is not used.");
-        $fail++;
+
+        unless ( grep { $local_function =~ $_ } @$ignore_functions ) {
+            $builder->diag("Test::LocalFunctions failed: '$local_function' is not used.");
+            $fail++;
+        }
     }
 
     return $fail;
