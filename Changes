@@ -2,6 +2,9 @@ Revision history for Test::LocalFunctions
 
 {{$NEXT}}
 
+0.20 2013-06-21T04:31:08Z
+        - Added functions to ignore testing.
+
 0.14 2013-06-03T07:22:35Z
         - Tiny fix to pass tests on perl-5.8.9.
 

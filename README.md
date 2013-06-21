@@ -6,7 +6,7 @@ Test::LocalFunctions - Detects unused local functions
 
 # VERSION
 
-This document describes Test::LocalFunctions version 0.14
+This document describes Test::LocalFunctions version 0.20
 
 
 
