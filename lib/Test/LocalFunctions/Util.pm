@@ -2,7 +2,6 @@ package Test::LocalFunctions::Util;
 
 use strict;
 use warnings;
-use ExtUtils::Manifest qw/maniread/;
 use Sub::Identify qw/stash_name/;
 use Module::Load;
 

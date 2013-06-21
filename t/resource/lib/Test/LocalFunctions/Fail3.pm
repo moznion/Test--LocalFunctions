@@ -1,4 +1,4 @@
-package Fail2;
+package Test::LocalFunctions::Fail3;
 use strict;
 use warnings;
 use utf8;
@@ -7,7 +7,7 @@ sub _foo {
 }
 
 sub main {
-    # _foo();
+    my $bar = "_foo()";
 }
 
 1;

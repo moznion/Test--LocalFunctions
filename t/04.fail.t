@@ -11,9 +11,10 @@ use Test::LocalFunctions;
 use Test::More;
 use Test::Builder::Tester;
 
-foreach my $lib (map{"t/resource/lib/Fail$_.pm"} 1..3) {
+use Data::Dumper; warn Dumper(@INC); # TODO remove
+foreach my $lib (map{"t/resource/lib/Test/LocalFunctions/Fail$_.pm"} 1..3) {
     if ($lib =~ /Fail\d*.pm/) {
-        require $&;
+        require "Test/LocalFunctions/$&";
     }
     test_out "not ok 1 - $lib";
     local_functions_ok($lib);

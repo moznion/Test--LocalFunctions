@@ -1,4 +1,4 @@
-package Fail1;
+package Test::LocalFunctions::Fail1;
 use strict;
 use warnings;
 use utf8;

@@ -1,4 +1,4 @@
-package Succ_with_ignore;
+package Test::LocalFunctions::Succ1;
 use strict;
 use warnings;
 use utf8;
@@ -12,12 +12,10 @@ sub _bar {
 sub _baz {
 }
 
-sub _foobar {
-}
-
 sub main {
-    _foo();
+    &_foo();
     _bar();
+    __PACKAGE__->_baz();
 }
 
 1;

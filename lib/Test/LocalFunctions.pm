@@ -21,13 +21,13 @@ BEGIN {
 }
 
 sub all_local_functions_ok {
-    my (%args) = @_;
-    return Test::LocalFunctions::Receptor::all_local_functions_ok( $backend_module, %args );
+    my ($args) = @_;
+    return Test::LocalFunctions::Receptor::all_local_functions_ok( $backend_module, $args );
 }
 
 sub local_functions_ok {
-    my ( $lib, %args ) = @_;
-    return Test::LocalFunctions::Receptor::local_functions_ok( $backend_module, $lib, \%args );
+    my ( $lib, $args ) = @_;
+    return Test::LocalFunctions::Receptor::local_functions_ok( $backend_module, $lib, $args );
 }
 
 sub which_backend_is_used {

@@ -5,16 +5,16 @@ use warnings;
 use ExtUtils::Manifest qw/maniread/;
 
 sub all_local_functions_ok {
-    my ( $backend, %args ) = @_;
+    my ( $backend, $args ) = @_;
 
     my $builder = $backend->builder;
-    my @libs = _list_modules_in_manifest($builder);
+    my @libs = _list_modules_in_manifest($builder, $args->{ignores});
 
     $builder->plan( tests => scalar @libs );
 
     my $fail = 0;
     for my $lib (@libs) {
-        _test_local_functions( $backend, $builder, $lib, \%args ) or $fail++;
+        _test_local_functions( $backend, $builder, $lib, $args ) or $fail++;
     }
     return $fail == 0;
 }
@@ -38,13 +38,22 @@ sub _test_local_functions {
 }
 
 sub _list_modules_in_manifest {
-    my $builder = shift;
+    my ( $builder, $ignores ) = @_;
 
     if ( not -f $ExtUtils::Manifest::MANIFEST ) {
         $builder->plan( skip_all => "$ExtUtils::Manifest::MANIFEST doesn't exist" );
     }
     my $manifest = maniread();
     my @libs = grep { m!\Alib/.*\.pm\Z! } keys %{$manifest};
+
+    for my $ignore (@$ignores) {
+        $ignore =~ s!::!/!g;
+        $ignore =~ /\.pm\Z/;
+        $ignore .= '.pm' if $& ne '.pm';
+        $ignore =~ m!\Alib/!;
+        $ignore = "lib/$ignore" if $& ne 'lib/';
+        @libs = grep { $_ ne $ignore } @libs;
+    }
     return @libs;
 }
 1;

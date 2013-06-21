@@ -10,9 +10,9 @@ use Test::LocalFunctions::PPI;
 
 use Test::More;
 
-foreach my $lib (map{"t/resource/lib/Succ$_.pm"} 1..1) {
+foreach my $lib (map{"t/resource/lib/Test/LocalFunctions/Succ$_.pm"} 1..1) {
     if ($lib =~ /Succ\d*.pm/) {
-        require $&;
+        require "Test/LocalFunctions/$&";
     }
     local_functions_ok($lib);
 }
