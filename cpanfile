@@ -16,5 +16,11 @@ on 'test' => sub {
 };
 
 on 'configure' => sub {
-    requires 'Module::Build', 0;
+    requires 'CPAN::Meta',          0;
+    requires 'CPAN::Meta::Prereqs', 0;
+    requires 'Module::Build',       0;
+};
+
+on develop => sub {
+    requires 'Test::Perl::Critic', 0;
 };
