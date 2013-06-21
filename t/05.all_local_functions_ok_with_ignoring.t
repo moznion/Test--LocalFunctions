@@ -15,7 +15,7 @@ $ExtUtils::Manifest::MANIFEST = "$FindBin::Bin/resource/MANIFEST";
 $ENV{TEST_LOCALFUNCTIONS_TEST_PHASE} = 1;
 all_local_functions_ok(
     {
-        ignores => [
+        ignore_modules => [
             'lib/Test/LocalFunctions/Fail1.pm',
             'Test/LocalFunctions/Fail2.pm',
             'Test::LocalFunctions::Fail3'

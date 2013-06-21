@@ -23,7 +23,7 @@ sub local_functions_ok {
 }
 
 sub is_in_use {
-    my ( undef, $builder, $file ) = @_;    # append $args later?
+    my ( undef, $builder, $file, $args ) = @_;    # append $args later?
 
     my $module          = Test::LocalFunctions::Util::extract_module_name($file);
     my @local_functions = Test::LocalFunctions::Util::list_local_functions($module);

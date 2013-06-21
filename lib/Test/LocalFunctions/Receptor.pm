@@ -8,7 +8,7 @@ sub all_local_functions_ok {
     my ( $backend, $args ) = @_;
 
     my $builder = $backend->builder;
-    my @libs = _list_modules_in_manifest($builder, $args->{ignores});
+    my @libs = _list_modules_in_manifest($builder, $args->{ignore_modules});
 
     $builder->plan( tests => scalar @libs );
 
