@@ -7,7 +7,7 @@ requires 'Exporter',              0;
 requires 'parent',                0;
 requires 'Carp',                  0;
 requires 'ExtUtils::Manifest',    0;
-recommends 'Compiler::Lexer',     '0.12';
+recommends 'Compiler::Lexer',     '0.13';
 
 on 'test' => sub {
     requires 'Test::Builder::Tester', '1.22';
