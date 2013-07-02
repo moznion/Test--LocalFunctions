@@ -2,6 +2,10 @@ Revision history for Test::LocalFunctions
 
 {{$NEXT}}
 
+0.21 2013-07-02T04:32:32Z
+        - Fix the problem that fails tests.
+          (@papix++)
+
 0.20 2013-06-21T04:31:08Z
         - Added functions to ignore testing.
 

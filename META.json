@@ -4,7 +4,7 @@
       "moznion  C<< <moznion@gmail.com> >>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.5.3, CPAN::Meta::Converter version 2.130880",
+   "generated_by" : "Minilla/v0.5.3, CPAN::Meta::Converter version 2.131560",
    "license" : [
       "perl_5"
    ],
@@ -43,7 +43,7 @@
       },
       "runtime" : {
          "recommends" : {
-            "Compiler::Lexer" : "0.12"
+            "Compiler::Lexer" : "0.13"
          },
          "requires" : {
             "Carp" : "0",
@@ -72,14 +72,15 @@
       },
       "homepage" : "https://github.com/moznion/Test--LocalFunctions",
       "repository" : {
-         "url" : "https://github.com/moznion/Test--LocalFunctions",
+         "type" : "git",
+         "url" : "git://github.com/moznion/Test--LocalFunctions.git",
          "web" : "https://github.com/moznion/Test--LocalFunctions"
       }
    },
-   "version" : "0.20",
+   "version" : "0.21",
    "x_contributors" : [
-      "papix <mail@papix.net>",
       "Syohei YOSHIDA <syohex@gmail.com>",
-      "moznion <moznion@gmail.com>"
+      "papix <mail@papix.net>",
+      "Taiki Kawakami <moznion@gmail.com>"
    ]
 }
