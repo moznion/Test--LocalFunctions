@@ -56,7 +56,7 @@ sub _fetch_tokens {
     open( my $fh, '<', $file ) or die("Can not open the file: $!");
     my $code   = do { local $/; <$fh> };
     my $lexer  = Compiler::Lexer->new($file);
-    my @tokens = grep { _remove_tokens($_) } map { @$$_ } ( $lexer->tokenize($code) );
+    my @tokens = grep { _remove_tokens($_) } @{$lexer->tokenize($code)};
     close($fh);
 
     return @tokens;
