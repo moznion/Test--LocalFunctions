@@ -13,7 +13,7 @@ my $backend_module;
 BEGIN {
     my $select_backend_module = sub {
         eval { require Compiler::Lexer };
-        return 'Test::LocalFunctions::PPI' if ( $ENV{T_LF_PPI} || $@ );
+        return 'Test::LocalFunctions::PPI' if ( $ENV{T_LF_PPI} || $@ || $Compiler::Lexer::VERSION < 0.13 );
         return 'Test::LocalFunctions::Fast';
     };
     $backend_module = $select_backend_module->();

@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use Test::More;
-plan skip_all => "Compiler::Lexer required for testing Test::LocalFunctions::Fast" if $@;
 
 use Test::LocalFunctions;
 
@@ -13,7 +12,7 @@ subtest 'Should select rightly' => sub {
     my $should_inc     = 'Test/LocalFunctions/Fast.pm';
     my $should_not_inc = 'Test/LocalFunctions/PPI.pm';
     my $expect_backend = 'Test::LocalFunctions::Fast';
-    if ($@) {
+    if ( $@ || $Compiler::Lexer::VERSION < 0.13 ) {
         $should_inc     = 'Test/LocalFunctions/PPI.pm';
         $should_not_inc = 'Test/LocalFunctions/Fast.pm';
         $expect_backend = 'Test::LocalFunctions::PPI';
