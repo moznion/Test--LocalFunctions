@@ -77,10 +77,10 @@
          "web" : "https://github.com/moznion/Test--LocalFunctions"
       }
    },
-   "version" : "0.21",
+   "version" : "0.22",
    "x_contributors" : [
       "Syohei YOSHIDA <syohex@gmail.com>",
       "papix <mail@papix.net>",
-      "Taiki Kawakami <moznion@gmail.com>"
+      "moznion <moznion@gmail.com>"
    ]
 }

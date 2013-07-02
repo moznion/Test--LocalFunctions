@@ -2,6 +2,9 @@ Revision history for Test::LocalFunctions
 
 {{$NEXT}}
 
+0.22 2013-07-02T15:57:02Z
+        - Fix some unfixed problems.
+
 0.21 2013-07-02T04:32:32Z
         - Fix the problem that fails tests.
           (@papix++)
