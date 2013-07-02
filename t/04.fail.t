@@ -11,7 +11,6 @@ use Test::LocalFunctions;
 use Test::More;
 use Test::Builder::Tester;
 
-use Data::Dumper; warn Dumper(@INC); # TODO remove
 foreach my $lib (map{"t/resource/lib/Test/LocalFunctions/Fail$_.pm"} 1..3) {
     if ($lib =~ /Fail\d*.pm/) {
         require "Test/LocalFunctions/$&";
