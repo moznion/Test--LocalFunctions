@@ -11,7 +11,7 @@ push @INC, "$FindBin::Bin/../resource/lib";
 BEGIN {
     use Test::More;
     eval 'use Compiler::Lexer';
-    plan skip_all => "Compiler::Lexer required for testing Test::LocalFunctions::Fast" if $@;
+    plan skip_all => "Compiler::Lexer required for testing Test::LocalFunctions::Fast" if $@ || $Compiler::Lexer::VERSION  < 0.13;
 }
 
 use Test::LocalFunctions::Fast;
