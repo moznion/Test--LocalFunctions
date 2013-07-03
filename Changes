@@ -2,6 +2,9 @@ Revision history for Test::LocalFunctions
 
 {{$NEXT}}
 
+0.23 2013-07-03T06:26:13Z
+        - Fix again.
+
 0.22 2013-07-02T15:57:02Z
         - Fix some unfixed problems.
 
